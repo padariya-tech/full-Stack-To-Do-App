@@ -20,7 +20,7 @@ const auth = async (req, res, next) => {
         if (!user) {
             return res.json({error:"User not found"});
         }
-        
+        req.token = token;
         req.user = user;
         next();
     } catch (err) {

@@ -87,9 +87,33 @@ const getprofile = async(req,res)=>{
     }
 }
 
+const logoutUser = async(req,res)=>{
+    try {
+        // logout user
+        await User.findByIdAndUpdate(
+            req.user.id,
+            { $pull: { tokens: { token: token } } },
+            { new: true }
+        );
+    
+        const options = {
+            httpOnly: true,
+            secure: true
+        };
+    
+        res.clearCookie("access_token", options).status(200).json({ message: "User logout successfully" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+    
+    
+}
+
 module.exports={
     test,
     registerUser,
     loginUser,
-    getprofile
+    getprofile,
+    logoutUser
 }

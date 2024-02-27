@@ -13,6 +13,9 @@ function Navbar() {
         <NavLink to='/login' activeClassName='active'>login</NavLink>
     </li>
     <li>
+        <NavLink to='/logout' activeClassName='active'>logout</NavLink>
+    </li>
+    <li>
         <NavLink to='/dashboard' activeClassName='active'>Dashboard</NavLink>
     </li>
    </nav>

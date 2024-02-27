@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-function Login() {
+function Login2() {
   const navigate = useNavigate()
   const [data, setData] = useState({
     username:'',
@@ -49,4 +49,4 @@ function Login() {
   )
 }
 
-export default Login
+export default Login2
