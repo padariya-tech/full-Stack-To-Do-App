@@ -1,71 +1,18 @@
-const express = require("express");
-const { createTodo, updateTodo } = require("./types.js");
-const cors  = require("cors");
-
-const { Todo } = require("./db");
-
-
+const express = require('express')
 const app = express();
+const dotenv = require('dotenv').config();
+const cors = require('cors')
+const {mongoose} = require('mongoose');
+const { DB_NAME } = require('./constant.js');
 
-app.use(express.json());
-app.use(cors());
-
-
-app.post("/add-todo",async function (req,res){
-
-    const createPayload = req.body;
-    const parsePayload = createTodo.safeParse(createPayload);
-    if(!parsePayload.success)
-    {
-        res.status(411).json({
-            msg:"you sent the wrong inputs"
-        })
-        return;
-    }
-
-    await Todo.create({
-        title:createPayload.title,
-        description:createPayload.description,
-        completed:false
-    })
-
-    res.json({
-
-        msg:"todo created"
-    })
-
+mongoose.connect(`${process.env.MONGO_URL}${DB_NAME}`).then(()=>{
+    console.log("database connected");
+}).catch((err)=>{
+    console.log("Database not connected",err);
 })
 
-app.get("/show-todo",async function (req,res){
+app.use(express.json())
 
-    const todo = await Todo.find();
-    res.json({
-        todo
-    })
-    
-})
+app.use('/users/',require('./routes/users.routes.js'))
 
-app.put("/completed",async function (req,res){
-
-    const mark = req.body;
-    const parsemark = updateTodo.safeParse(mark);
-    if(!parsemark.success)
-    {
-        res.status(411).json({
-            msg:"you enter wrong inputs"
-        })
-        return;
-    }
-
-    await Todo.update({
-        _id:req.body.id
-    },{
-        completed:true
-    })
-    res.json({
-        msg:"todo updated"
-    })
-    
-})
-
-app.listen(3000)
+app.listen(8000,()=>console.log("server is running on port 8000"))
